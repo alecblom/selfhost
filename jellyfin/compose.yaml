@@ -1,0 +1,24 @@
+name: jellyfin
+
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    hostname: jellyfin
+    user: ${USER_ID}:${GROUP_ID}
+    deploy:
+      resources:
+        limits:
+          memory: 4GB
+    volumes:
+      - config:/config
+      - cache:/cache
+      - type: bind
+        source: ${MEDIA_PATH}
+        target: /media
+    restart: 'unless-stopped'
+
+volumes:
+  config:
+  cache:
+    driver: local
