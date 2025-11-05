@@ -1,0 +1,42 @@
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    hostname: prowlarr
+    env_file: servarr.env
+    volumes:
+      - ./prowlarr/config:/config
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    hostname: radarr
+    env_file: servarr.env
+    volumes:
+      - ./radarr/config:/config
+      - ${MOVIES_DIR}:/movies
+      - ${ANIME_MOVIES_DIR}:/anime
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    hostname: sonarr
+    env_file: servarr.env
+    volumes:
+      - ./sonarr/config:/config
+      - ${SERIES_DIR}:/series
+      - ${ANIME_SERIES_DIR}:/anime
+    restart: unless-stopped
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    hostname: flaresolverr
+    env_file: servarr.env
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+    restart: unless-stopped
