@@ -3,12 +3,15 @@ name: 'transmission-openvpn'
 services:
   transmission-openvpn:
     image: haugene/transmission-openvpn
-    env_file:
-      - openvpn.env
-      - nordvpn.env
     volumes:
       - ${DATA_PATH}:/data
       - ${CONFIG_PATH}:/config
+    env_file:
+      - openvpn.env
+      - nordvpn.env
+    environment:
+      OPENVPN_USERNAME: ${VPN_USERNAME}
+      OPENVPN_PASSWORD: ${VPN_PASSWORD}
     cap_add:
       - NET_ADMIN
     logging:
