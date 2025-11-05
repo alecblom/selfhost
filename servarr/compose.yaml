@@ -1,7 +1,27 @@
 services:
+  transmission:
+    image: haugene/transmission-openvpn
+    volumes:
+      - ${TRANSMISSION_DATA_DIR}:/data
+      - ${TRANSMISSION_CONFIG_DIR}:/config
+    env_file:
+      - openvpn.env
+      - nordvpn.env
+    environment:
+      OPENVPN_USERNAME: ${VPN_USERNAME}
+      OPENVPN_PASSWORD: ${VPN_PASSWORD}
+      LOCAL_NETWORK: ${LOCAL_NETWORK}
+    cap_add:
+      - NET_ADMIN
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
+    network_mode: service:transmission
     hostname: prowlarr
     env_file: servarr.env
     volumes:
@@ -11,6 +31,7 @@ services:
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
+    network_mode: service:transmission
     hostname: radarr
     env_file: servarr.env
     volumes:
@@ -22,6 +43,7 @@ services:
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
+    network_mode: service:transmission
     hostname: sonarr
     env_file: servarr.env
     volumes:
@@ -33,6 +55,7 @@ services:
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
+    network_mode: service:transmission
     hostname: flaresolverr
     env_file: servarr.env
     environment:
