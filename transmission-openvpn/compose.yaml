@@ -2,6 +2,7 @@ name: 'transmission-openvpn'
 services:
   transmission-openvpn:
     image: haugene/transmission-openvpn
+    env_file: .env
     cap_add:
       - NET_ADMIN
     volumes:
