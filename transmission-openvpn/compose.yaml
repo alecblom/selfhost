@@ -9,6 +9,9 @@ services:
     env_file:
       - openvpn.env
       - nordvpn.env
+    networks:
+      p2p-vpn:
+        ipv4_address: 10.10.10.2
     environment:
       OPENVPN_USERNAME: ${VPN_USERNAME}
       OPENVPN_PASSWORD: ${VPN_PASSWORD}
@@ -19,3 +22,7 @@ services:
       driver: json-file
       options:
         max-size: 10m
+
+networks:
+  p2p-vpn:
+    external: true
