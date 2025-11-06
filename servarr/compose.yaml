@@ -2,30 +2,20 @@ services:
   transmission:
     image: haugene/transmission-openvpn
     volumes:
-      - ${TRANSMISSION_DATA_DIR}:/data
-      - ${TRANSMISSION_CONFIG_DIR}:/config
+      - transmission_data:/data
+      - transmission_config:/config
     env_file:
       - openvpn.env
       - nordvpn.env
     environment:
       OPENVPN_USERNAME: ${VPN_USERNAME}
       OPENVPN_PASSWORD: ${VPN_PASSWORD}
-      LOCAL_NETWORK: ${LOCAL_NETWORK}
     cap_add:
       - NET_ADMIN
     logging:
       driver: json-file
       options:
         max-size: 10m
-
-  prowlarr:
-    image: lscr.io/linuxserver/prowlarr:latest
-    container_name: prowlarr
-    network_mode: service:transmission
-    env_file: servarr.env
-    volumes:
-      - ./prowlarr/config:/config
-    restart: unless-stopped
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -34,6 +24,7 @@ services:
     env_file: servarr.env
     volumes:
       - ./radarr/config:/config
+      - transmission_data:/data
       - ${MOVIES_DIR}:/movies
       - ${ANIME_MOVIES_DIR}:/anime
     restart: unless-stopped
@@ -45,8 +36,18 @@ services:
     env_file: servarr.env
     volumes:
       - ./sonarr/config:/config
+      - transmission_data:/data
       - ${SERIES_DIR}:/series
       - ${ANIME_SERIES_DIR}:/anime
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    network_mode: service:transmission
+    env_file: servarr.env
+    volumes:
+      - ./prowlarr/config:/config
     restart: unless-stopped
 
   flaresolverr:
@@ -59,3 +60,7 @@ services:
       - LOG_HTML=${LOG_HTML:-false}
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
     restart: unless-stopped
+
+volumes:
+  transmission_data:
+  transmission_config:
