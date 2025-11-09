@@ -1,4 +1,4 @@
 volumes:
   downloads:
-    name: ${DOWNLOADS_VOLUME}:
+    name: ${DOWNLOADS_VOLUME}
     external: true
