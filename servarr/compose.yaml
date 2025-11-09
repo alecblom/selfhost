@@ -2,7 +2,7 @@ services:
   transmission:
     image: haugene/transmission-openvpn
     volumes:
-      - transmission_data:/data
+      - ${DOWNLOADS_VOLUME}:/data
       - transmission_config:/config
     env_file:
       - openvpn.env
@@ -24,7 +24,7 @@ services:
     env_file: servarr.env
     volumes:
       - ./radarr/config:/config
-      - transmission_data:/data
+      - ${DOWNLOADS_VOLUME}:/data
       - ${MOVIES_DIR}:/movies
       - ${ANIME_MOVIES_DIR}:/anime
     restart: unless-stopped
@@ -36,7 +36,7 @@ services:
     env_file: servarr.env
     volumes:
       - ./sonarr/config:/config
-      - transmission_data:/data
+      - ${DOWNLOADS_VOLUME}:/data
       - ${SERIES_DIR}:/series
       - ${ANIME_SERIES_DIR}:/anime
     restart: unless-stopped
@@ -62,5 +62,4 @@ services:
     restart: unless-stopped
 
 volumes:
-  transmission_data:
   transmission_config:
