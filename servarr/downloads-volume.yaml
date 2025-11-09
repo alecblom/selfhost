@@ -1,0 +1,3 @@
+volumes:
+  ${DOWNLOADS_VOLUME}:
+    external: true
