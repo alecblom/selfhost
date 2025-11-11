@@ -50,6 +50,17 @@ services:
       - ./prowlarr/config:/config
     restart: unless-stopped
 
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    network_mode: service:transmission
+    env_file: servarr.env
+    volumes:
+      - ./bazarr/config:/config
+      - ${MOVIES_DIR}:/movies #optional
+      - ${SERIES_DIR}:/tv #optional
+    restart: unless-stopped
+
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
