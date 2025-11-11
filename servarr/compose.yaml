@@ -38,7 +38,7 @@ services:
       - ./sonarr/config:/config
       - downloads:/data
       - ${SERIES_DIR}:/series
-      - ${ANIME_DIR}/movies:/anime
+      - ${ANIME_DIR}/series:/anime
     restart: unless-stopped
 
   prowlarr:
