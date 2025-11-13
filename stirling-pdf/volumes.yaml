@@ -1,0 +1,5 @@
+volumes:
+  stirling-data:
+  stirling-config:
+  stirling-logs:
+  

@@ -1,0 +1,19 @@
+services:
+  stirling-pdf:
+    container_name: Stirling-PDF-Security
+    image: docker.stirlingpdf.com/stirlingtools/stirling-pdf:latest
+    env_file: stirling-pdf.env
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/api/v1/info/status | grep -q 'UP' && curl -fL http://localhost:8080/ | grep -q 'Please sign in'"]
+      interval: 5s
+      timeout: 10s
+      retries: 16
+    volumes:
+      - ${DATA_DIR:-'stirling-data'}:/usr/share/tessdata:rw
+      - ${CONFIG_DIR:-'stirling-config'}:/configs:rw
+      - ${LOGS_DIR:-'stirling-logs'}:/logs:rw
+    restart: on-failure:5
